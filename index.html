@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whatsapp API</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+<body oncontextmenu="return false;">
+    <div class="container-fluid d-flex justify-content-center text-center">
+        <div class="card my-3" style="width: 25rem;" id="api">
+            <img class="card-img-top" id="qrcode">
+            <div class="card-body">
+              <h5 class="card-title">Whatsapp API</h5>
+              <p class="card-text">Lord Daud</p>
+            </div>
+            <ul class="list-group list-group-flush" id="histori">
+            </ul>
+          </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.3/socket.io.min.js" integrity="sha512-GtM/5c/Ie0lStj6QwEG0HkpMQuGr9vrOAgFD4nNmImviyZvsJxN7TYU7b+R7Kthob0zFBUpuxfl3R3Mn1qekTw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(document).ready(function(){
+            var socket = io.connect('http://localhost:3000', { path: '/socket.io'});
+            socket.on('message', function(msg){
+                $('#histori').append($('<li class="list-group-item">').text(msg));
+            })
+
+            socket.on('qr', function(src){
+                $('#qrcode').attr('src', src);
+            });
+
+            socket.on('ready', function(src){
+                $('#qrcode').hide();
+            });
+
+            socket.on('authenticated', function(src){
+                $('#qrcode').hide();
+            });
+        });
+    </script>
+</body>
+</html>
